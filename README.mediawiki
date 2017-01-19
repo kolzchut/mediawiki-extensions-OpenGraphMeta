@@ -1,0 +1,42 @@
+= OpenGraphMeta extension for MediaWiki =
+'''OpenGraphMeta''' provides [http://opengraphprotocol.org/ OpenGraph protocol] metadata for articles on the wiki for 3rd parties like Facebook
+to extract. The primary use for this extension is for any wiki that provides its users a button to "Like" pages on the wiki, especially if the
+wiki uses a custom default skin.
+As sometimes Facebook can extract undesirable parts from the page (known on some custom skins to potentially extract
+random images irrelevant to the content) providing this data gives Facebook clean data to display in likes, and cleans up the long title into
+a pair of clean site and page titles.
+
+
+This extension can also be paired with [https://www.mediawiki.org/wiki/Extension:Description2 Extension:Description2] which extracts
+description information from articles. When both are installed, OpenGraphMeta will make use of the information Description2 extracts
+to set meta tags such as "og:description".
+
+== Usage ==
+You can use the parser function <code><nowiki>{{#setmainimage:Filename.ext}}</nowiki></code> to set the "og:image" meta tag for any page;
+this directs Facebook and others to use said image when sharing.
+
+Another parser function, <code><nowiki>{{#setmaintitle:Your own title}}</nowiki></code>, allows to set og:title.
+
+Hint: you may use said parser function in an infobox template to automatically set the preferred image. 
+
+You can also set a default fallback image - see the [[#configuration options]].
+
+== Configuration options ==
+* $egFacebookAppId: set the meta tag "fb:app_id".
+* $egFacebookAdmins: set the meta tag "fb:admins"
+* $egFacebookDefaultImage - set a default fallback image for sharing. Either a relative path (like $wgLogo) or a  fully-qualified URL.
+
+== Hooks provided ==
+'OpenGraphMetaHeaders', which can be used like this:
+<code>static public function onOpenGraphMetaHeaders( &$meta, $title ) { }</code>
+
+== Changelog ==
+* 0.5.6: Add $egFacebookDefaultImage as a fallback for all pages.
+* 0.5.5:  Backport some useful Wikia changes
+** Add prefix to fb:app_id meta tag
+** Add hook 'OpenGraphMetaHeaders'
+* 0.5.4: Add Michael Chaudhary's patch for fixing user-selected og:image
+* 0.5.3: Be extra paranoid to make sure we have a File or something that for sure is an object
+* 0.5.2: Converted long PHP arrays to short, removed unnecessary bool retvals from hooked functions
+* 0.5.1: Allow to override og:title with parser function 'setmaintitle'
+* 0.5.0: extension registration support and more

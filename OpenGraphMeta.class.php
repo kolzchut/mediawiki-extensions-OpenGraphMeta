@@ -61,8 +61,8 @@ class OpenGraphMeta {
 	 * @param ParserOutput $parserOutput
 	 */
 	public static function onOutputPageParserOutput( OutputPage &$out, ParserOutput $parserOutput ) {
-		global $wgLogo, $wgSitename, $wgXhtmlNamespaces, $egFacebookAppId, $egFacebookAdmins;
-
+		global $wgLogo, $wgSitename, $wgXhtmlNamespaces, $egFacebookAppId, $egFacebookAdmins,
+				$egFacebookDefaultImage;
 		$setMainImage = $parserOutput->getExtensionData( 'setmainimage' );
 		$setMainTitle = $parserOutput->getExtensionData( 'setmaintitle' );
 
@@ -112,6 +112,8 @@ class OpenGraphMeta {
 				// In some edge-cases we won't have defined an object but rather a full URL.
 				$meta['og:image'] = $mainImage;
 			}
+		} elseif ( isset( $egFacebookDefaultImage ) && !is_null( $egFacebookDefaultImage ) ) {
+			$meta["og:image"] = wfExpandUrl( $egFacebookDefaultImage );
 		} elseif ( $isMainpage ) {
 			$meta['og:image'] = wfExpandUrl( $wgLogo );
 		}
